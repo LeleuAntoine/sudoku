@@ -1,0 +1,18 @@
+$default-size: 3rem;
+$default-font-size: 1.5rem;
+
+.square {
+  width: var(--square-size, $default-size);
+  height: var(--square-size, $default-size);
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size, $default-font-size);
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eee;
+  }
+}

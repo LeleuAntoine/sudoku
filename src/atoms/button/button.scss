@@ -1,0 +1,15 @@
+$default-button-size: 4rem;
+$default-font-size: 1.5rem;
+
+.button {
+  font-size: var(--font-size, $default-font-size);
+  padding: var(--button-size, $default-button-size);
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}

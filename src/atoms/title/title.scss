@@ -1,0 +1,9 @@
+$title-font-size: 2rem;
+$title-font-weight: bold;
+$title-color: #333;
+
+.title {
+  font-size: var(--title-font-size, $title-font-size);
+  font-weight: var(--title-font-weight, $title-font-weight);
+  color: var(--title-color, $title-color);
+}
