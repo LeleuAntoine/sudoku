@@ -1,0 +1,9 @@
+.game-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .button {
+    margin-bottom: 1rem;
+  }
+}
