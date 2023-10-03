@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Label from "../../atoms/label/Label";
 import Button from "../../atoms/button/Button";
 import Square from "../../atoms/square/Square";
@@ -11,13 +11,6 @@ const LeftPanel = () => {
         setItems([...items, Math.floor(Math.random() * 9) + 1]);
     };
 
-    const handleSolveSudoku = () => {
-        // Logique pour résoudre le Sudoku en utilisant les valeurs de 'items'
-        // Cette logique dépendra de votre implémentation du Sudoku Solver
-        // Ici, je suppose simplement une alerte pour l'exemple.
-        alert("Sudoku résolu !");
-    };
-
     return (
         <div className="left-panel">
             <Label color={'#FF0000'} fontSize={2} text={'Test Label'}/>
@@ -28,8 +21,6 @@ const LeftPanel = () => {
                     <Square key={index} size={2} fontSize={1} value={item}/>
                 ))}
             </ul>
-
-            <Button onClick={handleSolveSudoku} size={2} fontSize={1} label={'Résoudre le Sudoku'}/>
         </div>
     );
 };
