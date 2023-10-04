@@ -5,24 +5,39 @@ import GameControl from "../../molecules/gameControl/GameControl";
 import './gamePage.scss';
 
 const GamePage = () => {
-    const [sampleGrid, setSampleGrid] = useState([
-        [0, 0, 9, 0, 0, 0, 1, 0, 0],
-        [0, 0, 0, 2, 0, 6, 0, 0, 0],
-        [0, 0, 7, 0, 9, 0, 8, 0, 0],
-        [0, 0, 5, 0, 8, 0, 3, 0, 0],
-        [8, 0, 0, 0, 3, 0, 0, 0, 7],
-        [0, 0, 2, 1, 0, 4, 9, 0, 0],
-        [0, 4, 0, 0, 5, 0, 0, 8, 0],
+    const initialGrid = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 6, 0, 8, 0, 9, 0, 2, 0],
-    ]);
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    const [actionStack, setActionStack] = useState([]);
+
+    const addActionToStack = (action) => {
+        setActionStack((prevStack) => [...prevStack, action]);
+    };
+
+    const [grid, setGrid] = useState(initialGrid);
     const [isSolve, setIsSolve] = useState(false);
 
     useRef(() => {
-    }, [setSampleGrid, sampleGrid])
+    }, [setGrid, grid])
+
+    //Resolve Sudoku methode
+    const handleSudoku = () => {
+        const isSolve = solveSudoku;
+        if (isSolve()) {
+            setIsSolve(true);
+        }
+    };
 
     function solveSudoku() {
-        const emptyCell = findEmptyCell(sampleGrid);
+        const emptyCell = findEmptyCell(grid);
 
         if (!emptyCell) {
             return true;
@@ -31,14 +46,14 @@ const GamePage = () => {
         const [row, col] = emptyCell;
 
         for (let num = 1; num <= 9; num++) {
-            if (isSafe(sampleGrid, row, col, num)) {
-                sampleGrid[row][col] = num;
+            if (isSafe(grid, row, col, num)) {
+                grid[row][col] = num;
 
                 if (solveSudoku()) {
                     return true;
                 }
 
-                sampleGrid[row][col] = 0;
+                grid[row][col] = 0;
             }
         }
 
@@ -82,36 +97,37 @@ const GamePage = () => {
         return true;
     }
 
+    //Reset Sudoku grid
     const resetSudoku = () => {
-        // Remplacez sampleGrid par votre grille initiale
-        const initialGrid = [
-            [0, 0, 9, 0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 2, 0, 6, 0, 0, 0],
-            [0, 0, 7, 0, 9, 0, 8, 0, 0],
-            [0, 0, 5, 0, 8, 0, 3, 0, 0],
-            [8, 0, 0, 0, 3, 0, 0, 0, 7],
-            [0, 0, 2, 1, 0, 4, 9, 0, 0],
-            [0, 4, 0, 0, 5, 0, 0, 8, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 6, 0, 8, 0, 9, 0, 2, 0],
-        ];
-
-        // Mettez à jour la grille avec les valeurs initiales
-        setSampleGrid(initialGrid);
-
-        // Réinitialisez également la variable d'état isSolve si nécessaire
+        setGrid(initialGrid);
         setIsSolve(false);
     };
 
+    //Update cell value of Sudoku grid
     const updateCell = (row, col, newValue) => {
-        // Assurez-vous que les indices de ligne et de colonne sont valides
+        addActionToStack({
+            type: "assignValue",
+            rowIndex: row,
+            colIndex: col,
+            previousValue: grid[row][col],
+            newValue: newValue,
+        })
+
         if (row >= 0 && row < 9 && col >= 0 && col < 9) {
-            // Créez une copie de la grille actuelle
-            const updatedGrid = [...sampleGrid];
-            // Mettez à jour la valeur de la cellule spécifiée
+            const updatedGrid = [...grid];
             updatedGrid[row][col] = newValue;
-            // Mettez à jour l'état de la grille
-            setSampleGrid(updatedGrid);
+            setGrid(updatedGrid);
+        }
+    };
+
+    // Cancel last action of user
+    const undoLastAction = () => {
+        if (actionStack.length > 0) {
+            const lastAction = actionStack[actionStack.length - 1];
+            const updatedGrid = [...grid];
+            updatedGrid[lastAction.rowIndex][lastAction.colIndex] = lastAction.previousValue;
+            setGrid(updatedGrid);
+            setActionStack((prevStack) => prevStack.slice(0, -1));
         }
     };
 
@@ -121,19 +137,13 @@ const GamePage = () => {
                 <LeftPanel/>
             </div>
             <div className={"body-game"}>
-                <GameControl onAutoPosition={() => {
-                }} onReset={resetSudoku}/>
                 <SudokuGrid
-                    grid={sampleGrid}
+                    grid={grid}
                     onCellClick={(row, col, newValue) => {
                         updateCell(row, col, newValue);
                     }}
-                    solveSudoku={() => {
-                        const isSolve = solveSudoku;
-                        if (isSolve()) {
-                            setIsSolve(true);
-                        }
-                    }}/>
+                />
+                <GameControl cancel={undoLastAction} onReset={resetSudoku} solveSudoku={() => handleSudoku()}/>
                 {isSolve &&
                     <div>Success</div>
                 }

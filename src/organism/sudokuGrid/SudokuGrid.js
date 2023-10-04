@@ -1,18 +1,19 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from "../../atoms/button/Button";
 import './sudokuGrid.scss'
 
-const SudokuGrid = ({grid, onCellClick, solveSudoku}) => {
+const SudokuGrid = ({grid, onCellClick}) => {
     const [errorMsg, setErrorMsg] = useState();
     const handleCellClick = (row, col, newValue) => {
-        newValue  = isNaN(newValue) ? 0 : newValue;
+        newValue = isNaN(newValue) ? 0 : newValue;
         onCellClick(row, col, newValue);
     };
 
     return (
         <div>
-            {errorMsg && <p className="error-message">{errorMsg}</p>}
+            {errorMsg &&
+                <p className="error-message">{errorMsg}</p>
+            }
             <div className="sudoku-grid">
                 {grid.map((row, rowIndex) => (
                     <div key={rowIndex} className="grid-row">
@@ -29,7 +30,6 @@ const SudokuGrid = ({grid, onCellClick, solveSudoku}) => {
                                         if (newValue >= 0 && newValue <= 9) {
                                             handleCellClick(rowIndex, colIndex, newValue);
                                         } else {
-                                            // Afficher le message d'erreur
                                             setErrorMsg('La valeur doit être comprise entre 1 et 9');
                                         }
                                     }}
@@ -38,9 +38,6 @@ const SudokuGrid = ({grid, onCellClick, solveSudoku}) => {
                         ))}
                     </div>
                 ))}
-            </div>
-            <div>
-                <Button onClick={solveSudoku} size={2} fontSize={1} label={'Résoudre le Sudoku'}/>
             </div>
         </div>
     );

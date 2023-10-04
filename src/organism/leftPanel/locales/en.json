@@ -1,0 +1,12 @@
+{
+  "Sudoku": "Sudoku",
+  "Presentation": "Presentation",
+  "welcomeMessage": "Welcome to our Sudoku solver!",
+  "appDescription": "This application is designed to help you solve Sudoku grids in no time. You don't need to worry about filling in each cell correctly; our solver will take care of it.",
+  "howItWorks": "How does it work?",
+  "step1": "- Enter the given numbers in the grid at the top left.",
+  "step2": "- Click \"Solve Sudoku\" to see the magic happen.",
+  "step3": "- You can also use the \"Auto Position\" function to automatically fill in empty cells.",
+  "step4": "- If you want to play, there are many other Sudoku apps for that. Our tool is designed to solve Sudokus quickly and efficiently.",
+  "enjoySolving": "Enjoy solving your Sudokus!"
+}
