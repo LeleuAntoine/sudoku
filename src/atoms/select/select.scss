@@ -1,0 +1,11 @@
+select {
+  padding: 0.5rem;
+  font-size: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+select.large-font {
+  font-size: 1.5rem;
+}

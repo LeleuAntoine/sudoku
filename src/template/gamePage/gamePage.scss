@@ -10,14 +10,14 @@
     margin-bottom: 3rem;
     grid-column: 2 / 4;
     grid-row: 1;
-
+    text-align: center;
   }
 
   .left-panel {
     position: fixed;
     top: 0;
     left: 0;
-    width: 17rem;
+    width: 22rem;
     height: 100vh;
     z-index: 999;
   }

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './label.scss';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const Label = ({ text, fontSize, color }) => {
+const Label = ({text, fontSize, color, icon}) => {
     const labelStyle = {
         '--label-font-size': `${fontSize}rem`,
         '--label-color': color,
@@ -10,6 +11,9 @@ const Label = ({ text, fontSize, color }) => {
 
     return (
         <label className="label" style={labelStyle}>
+            {icon &&
+                <FontAwesomeIcon icon={icon} className={'label-icone'}/>
+            }
             {text}
         </label>
     );

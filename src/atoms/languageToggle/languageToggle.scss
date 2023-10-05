@@ -1,0 +1,23 @@
+.language-toggle {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.flag-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.language-text {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.language-toggle:hover {
+  background-color: #f0f0f0;
+}

@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import './sudokuGrid.scss'
+import {useTranslation} from "react-i18next";
 
 const SudokuGrid = ({grid, onCellClick}) => {
+    const {t} = useTranslation();
+
     const [errorMsg, setErrorMsg] = useState();
     const handleCellClick = (row, col, newValue) => {
         newValue = isNaN(newValue) ? 0 : newValue;
@@ -30,7 +33,7 @@ const SudokuGrid = ({grid, onCellClick}) => {
                                         if (newValue >= 0 && newValue <= 9) {
                                             handleCellClick(rowIndex, colIndex, newValue);
                                         } else {
-                                            setErrorMsg('La valeur doit être comprise entre 1 et 9');
+                                            setErrorMsg(t('translation:error'));
                                         }
                                     }}
                                 />

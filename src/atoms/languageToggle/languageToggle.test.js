@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import {render, fireEvent} from '@testing-library/react';
 import LanguageToggle from './LanguageToggle';
 
 jest.mock('react-i18next', () => ({
@@ -12,7 +12,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 test('LanguageToggle switches between languages', () => {
-    const { getByText } = render(<LanguageToggle />);
+    const {getByText} = render(<LanguageToggle/>);
 
     const frenchButton = getByText('French');
     const englishButton = getByText('English');

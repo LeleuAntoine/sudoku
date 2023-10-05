@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import {render, fireEvent} from '@testing-library/react';
 import LeftPanel from './LeftPanel';
 
 test('renders LeftPanel component', () => {
-    const { getByText, getByLabelText } = render(<LeftPanel />);
+    const {getByText, getByLabelText} = render(<LeftPanel/>);
 
     const labelElement = getByText(/Test Label/i);
     const addButton = getByText('+');
@@ -13,7 +13,7 @@ test('renders LeftPanel component', () => {
 });
 
 test('adds item to the list when "+" button is clicked', () => {
-    const { getByText, getByLabelText, getByRole } = render(<LeftPanel />);
+    const {getByText, getByLabelText, getByRole} = render(<LeftPanel/>);
 
     const addButton = getByText('+');
 

@@ -1,12 +1,11 @@
 {
   "sudoku": "Sudoku",
-  "Presentation": "Présentation",
+  "presentation": "Présentation",
   "welcomeMessage": "Bienvenue dans notre résolveur de Sudoku !",
   "appDescription": "Cette application est conçue pour vous aider à résoudre des grilles de Sudoku en un rien de temps. Vous n'avez pas besoin de vous inquiéter de remplir correctement chaque case ; notre résolveur s'occupera de tout.",
   "howItWorks": "Comment ça marche ?",
-  "step1": "- Entrez les chiffres donnés dans la grille en haut à gauche.",
-  "step2": "- Cliquez sur \"Résoudre le Sudoku\" pour voir la magie opérer.",
-  "step3": "- Vous pouvez également utiliser la fonction \"Positionnement automatique\" pour remplir automatiquement les cases vides.",
-  "step4": "- Si vous souhaitez jouer, il existe de nombreuses autres applications Sudoku pour cela. Notre outil est destiné à résoudre des Sudokus rapidement et efficacement.",
+  "step1": "Entrez les chiffres donnés dans la grille en haut à gauche.",
+  "step2": "Cliquez sur \"Résoudre le Sudoku\" pour voir la magie opérer.",
+  "step3": "Si vous souhaitez jouer, il existe de nombreuses autres applications Sudoku pour cela. Notre outil est destiné à résoudre des Sudokus rapidement et efficacement.",
   "enjoySolving": "Profitez de la résolution de vos Sudokus !"
 }

@@ -5,3 +5,7 @@ $text-color: #666;
   font-size: var(--text-font-size, $text-font-size);
   color: var(--text-color, $text-color);
 }
+
+.label-icone {
+  margin-right: 0.75rem;
+}

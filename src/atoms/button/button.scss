@@ -1,4 +1,3 @@
-/* Styles pour les boutons */
 $default-button-size: 4rem;
 $default-font-size: 1.5rem;
 
@@ -9,7 +8,11 @@ $default-font-size: 1.5rem;
   color: #fff;
   border: none;
   cursor: pointer;
-  border-radius: 5px; /* Ajout du border-radius */
+  border-radius: 5px;
+
+  .button-icon {
+    margin-right: 1rem;
+  }
 
   &:hover {
     background-color: #0056b3;

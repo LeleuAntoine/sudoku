@@ -1,3 +1,5 @@
 {
-
+  "resetButton": "Reset",
+  "undoButton": "Undo",
+  "solveSudokuButton": "Solve Sudoku"
 }
