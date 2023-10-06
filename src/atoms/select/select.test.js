@@ -1,30 +1,64 @@
 import React from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Select from './Select';
 
-test('renders Select component', () => {
-    const handleChange = jest.fn();
+const options = [
+    { value: 'fr', label: 'French' },
+    { value: 'en', label: 'English' },
+];
 
-    const options = [
-        {value: 'fr', label: 'Français'},
-        {value: 'en', label: 'Anglais'},
-    ];
+//TODO
+describe('Select component', () => {
+    it('renders without errors', () => {
+        const { getByTestId } = render(
+            <Select
+                id="language-select"
+                value="fr"
+                onChange={() => {}}
+                options={options}
+                fontSize="16px"
+            />
+        );
 
-    render(
-        <Select
-            id="language-select"
-            value="fr"
-            onChange={handleChange}
-            options={options}
-            fontSize="16px"
-        />
-    );
+        expect(getByTestId('select-component')).toBeTruthy();
+    });
 
-    const selectElement = screen.getByTestId('language-select');
-    expect(selectElement).toBeInTheDocument();
-    expect(selectElement).toHaveValue('fr');
+    it('displays options correctly', () => {
+        const { getByTestId } = render(
+            <Select
+                id="language-select"
+                value="fr"
+                onChange={() => {}}
+                options={options}
+                fontSize="16px"
+            />
+        );
 
-    fireEvent.change(selectElement, {target: {value: 'en'}});
+        const selectElement = getByTestId('select-component');
+        expect(selectElement).toHaveValue('fr');
 
-    expect(handleChange).toHaveBeenCalledWith('en');
+        options.forEach((option) => {
+            expect(selectElement).toContainElement(
+                getByTestId(`option-${option.value}`)
+            );
+        });
+    });
+
+    it('calls onChange when an option is selected', () => {
+        const handleChange = jest.fn();
+        const { getByTestId } = render(
+            <Select
+                id="language-select"
+                value="fr"
+                onChange={handleChange}
+                options={options}
+                fontSize="16px"
+            />
+        );
+
+        const selectElement = getByTestId('select-component');
+        fireEvent.change(selectElement, { target: { value: 'en' } });
+
+        expect(handleChange).toHaveBeenCalledWith('en');
+    });
 });

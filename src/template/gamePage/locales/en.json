@@ -1,0 +1,4 @@
+{
+  "success": "Sudoku solved successfully!",
+  "error": "No solution exists for this configuration"
+}

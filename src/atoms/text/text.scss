@@ -1,9 +1,0 @@
-$text-font-size: 1rem;
-$text-line-height: 1.5;
-$text-color: #666;
-
-.text {
-  font-size: var(--text-font-size, $text-font-size);
-  line-height: var(--text-line-height, $text-line-height);
-  color: var(--text-color, $text-color);
-}
