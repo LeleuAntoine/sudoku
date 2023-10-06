@@ -1,8 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import LeftPanel from '../../organism/leftPanel/LeftPanel';
 import SudokuGrid from '../../organism/sudokuGrid/SudokuGrid';
 import GameControl from "../../molecules/gameControl/GameControl";
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './gamePage.scss';
+import {useTranslation} from "react-i18next";
 
 const GamePage = () => {
     const initialGrid = [
@@ -16,27 +19,75 @@ const GamePage = () => {
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+
     const [actionStack, setActionStack] = useState([]);
+    const [grid, setGrid] = useState(initialGrid);
+    const {t} = useTranslation();
 
     const addActionToStack = (action) => {
         setActionStack((prevStack) => [...prevStack, action]);
     };
 
-    const [grid, setGrid] = useState(initialGrid);
-    const [isSolve, setIsSolve] = useState(false);
-
-    useRef(() => {
-    }, [setGrid, grid])
-
-    //Resolve Sudoku methode
     const handleSudoku = () => {
-        const isSolve = solveSudoku;
-        if (isSolve()) {
-            setIsSolve(true);
+        if (!isSudokuValid(grid)) {
+            toast.error(t('translation:error'), {
+                position: 'top-right',
+                autoClose: 3000,
+            });
+        } else {
+            if (solveSudoku()) {
+                toast.success(t('translation:success'), {
+                    position: 'top-right',
+                    autoClose: 3000,
+                });
+            }
         }
     };
 
-    function solveSudoku() {
+    //Check if sudoku grid is valid
+    function isSudokuValid(grid) {
+        for (let row = 0; row < 9; row++) {
+            const rowValues = [];
+            for (let col = 0; col < 9; col++) {
+                const cellValue = grid[row][col];
+                if (cellValue !== 0 && rowValues.includes(cellValue)) {
+                    return false;
+                }
+                rowValues.push(cellValue);
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            const colValues = [];
+            for (let row = 0; row < 9; row++) {
+                const cellValue = grid[row][col];
+                if (cellValue !== 0 && colValues.includes(cellValue)) {
+                    return false;
+                }
+                colValues.push(cellValue);
+            }
+        }
+
+        for (let startRow = 0; startRow < 9; startRow += 3) {
+            for (let startCol = 0; startCol < 9; startCol += 3) {
+                const subgridValues = [];
+                for (let row = startRow; row < startRow + 3; row++) {
+                    for (let col = startCol; col < startCol + 3; col++) {
+                        const cellValue = grid[row][col];
+                        if (cellValue !== 0 && subgridValues.includes(cellValue)) {
+                            return false;
+                        }
+                        subgridValues.push(cellValue);
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    //Resolve valid sudoku grid
+    const solveSudoku = () => {
         const emptyCell = findEmptyCell(grid);
 
         if (!emptyCell) {
@@ -47,18 +98,22 @@ const GamePage = () => {
 
         for (let num = 1; num <= 9; num++) {
             if (isSafe(grid, row, col, num)) {
-                grid[row][col] = num;
+                const updatedGrid = [...grid];
+                updatedGrid[row][col] = num;
+                setGrid(updatedGrid);
 
                 if (solveSudoku()) {
                     return true;
                 }
 
-                grid[row][col] = 0;
+                updatedGrid[row][col] = 0;
+                setGrid(updatedGrid);
             }
         }
 
         return false;
-    }
+    };
+
 
     function findEmptyCell(grid) {
         for (let row = 0; row < 9; row++) {
@@ -97,10 +152,9 @@ const GamePage = () => {
         return true;
     }
 
-    //Reset Sudoku grid
     const resetSudoku = () => {
+        setActionStack([]);
         setGrid(initialGrid);
-        setIsSolve(false);
     };
 
     //Update cell value of Sudoku grid
@@ -137,16 +191,14 @@ const GamePage = () => {
                 <LeftPanel/>
             </div>
             <div className={"body-game"}>
+                <ToastContainer position="top-right" autoClose={3000}/>
                 <SudokuGrid
                     grid={grid}
                     onCellClick={(row, col, newValue) => {
                         updateCell(row, col, newValue);
                     }}
                 />
-                <GameControl cancel={undoLastAction} onReset={resetSudoku} solveSudoku={() => handleSudoku()}/>
-                {isSolve &&
-                    <div>Success</div>
-                }
+                <GameControl cancel={undoLastAction} onReset={resetSudoku} solveSudoku={() => handleSudoku()} resetDisable={actionStack.length === 0}/>
             </div>
         </div>
     );

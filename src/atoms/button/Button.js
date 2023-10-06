@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import './button.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-const Button = ({label, size, fontSize, onClick, classname, icon}) => {
+const Button = ({label, size, fontSize, onClick, classname, icon, disable}) => {
     const buttonStyle = {
         '--button-size': `${size}rem`,
         '--font-size': `${fontSize}rem`,
     };
 
     return (
-        <button className={`button ${classname}`} style={buttonStyle} onClick={onClick}>
+        <button className={`button ${classname}`} style={buttonStyle} onClick={onClick} disabled={disable}>
             {icon &&
                 <FontAwesomeIcon icon={icon} className="button-icon"/>
             }

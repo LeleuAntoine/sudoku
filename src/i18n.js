@@ -4,10 +4,12 @@ import leftPanelFr from './organism/leftPanel/locales/fr.json'
 import sudokuGridFr from './organism/sudokuGrid/locales/fr.json'
 import gameControlFr from './molecules/gameControl/locales/fr.json'
 import languageToggleFr from './atoms/languageToggle/locales/fr.json'
+import gamePageFr from './template/gamePage/locales/fr.json'
 import leftPanelEn from './organism/leftPanel/locales/en.json'
 import sudokuGridEn from './organism/sudokuGrid/locales/en.json'
 import gameControlEn from './molecules/gameControl/locales/en.json'
 import languageToggleEn from './atoms/languageToggle/locales/en.json'
+import gamePageEn from './template/gamePage/locales/en.json'
 
 const resources = {
     en: {
@@ -16,6 +18,7 @@ const resources = {
             ...sudokuGridEn,
             ...gameControlEn,
             ...languageToggleEn,
+            ...gamePageEn,
         }
     },
     fr: {
@@ -24,6 +27,7 @@ const resources = {
             ...sudokuGridFr,
             ...gameControlFr,
             ...languageToggleFr,
+            ...gamePageFr,
         }
     }
 };

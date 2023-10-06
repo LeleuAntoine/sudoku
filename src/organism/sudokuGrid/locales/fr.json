@@ -1,3 +1,3 @@
 {
-  "error": "La valeur doit être comprise entre 1 et 9"
+  "errorValue": "La valeur doit être comprise entre 1 et 9"
 }

@@ -10,6 +10,12 @@ $default-font-size: 1.5rem;
   cursor: pointer;
   border-radius: 5px;
 
+  &:disabled {
+    background-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+  }
+
   .button-icon {
     margin-right: 1rem;
   }

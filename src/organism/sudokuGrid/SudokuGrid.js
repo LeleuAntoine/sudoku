@@ -1,22 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './sudokuGrid.scss'
 import {useTranslation} from "react-i18next";
+import {toast} from "react-toastify";
 
 const SudokuGrid = ({grid, onCellClick}) => {
     const {t} = useTranslation();
 
-    const [errorMsg, setErrorMsg] = useState();
     const handleCellClick = (row, col, newValue) => {
-        newValue = isNaN(newValue) ? 0 : newValue;
-        onCellClick(row, col, newValue);
+        if (newValue >= 0 && newValue <= 9) {
+            newValue = isNaN(newValue) ? 0 : newValue;
+            onCellClick(row, col, newValue);
+        } else {
+            toast.error(t('translation:errorValue'), {
+                position: 'top-right',
+                autoClose: 3000,
+            });
+        }
     };
 
     return (
         <div>
-            {errorMsg &&
-                <p className="error-message">{errorMsg}</p>
-            }
             <div className="sudoku-grid">
                 {grid.map((row, rowIndex) => (
                     <div key={rowIndex} className="grid-row">
@@ -28,14 +32,7 @@ const SudokuGrid = ({grid, onCellClick}) => {
                             >
                                 <input
                                     value={cell !== 0 ? cell : ''}
-                                    onChange={(e) => {
-                                        const newValue = parseInt(e.target.value, 10) || 0;
-                                        if (newValue >= 0 && newValue <= 9) {
-                                            handleCellClick(rowIndex, colIndex, newValue);
-                                        } else {
-                                            setErrorMsg(t('translation:error'));
-                                        }
-                                    }}
+                                    onChange={(e) => handleCellClick(rowIndex, colIndex, parseInt(e.target.value, 10) || 0)}
                                 />
                             </div>
                         ))}

@@ -4,7 +4,7 @@ import './gameControl.scss';
 import {faSync, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {useTranslation} from "react-i18next";
 
-const GameControl = ({onReset, cancel, solveSudoku}) => {
+const GameControl = ({onReset, cancel, solveSudoku, resetDisable}) => {
     const {t} = useTranslation();
 
     return (
@@ -31,6 +31,7 @@ const GameControl = ({onReset, cancel, solveSudoku}) => {
                 size={1}
                 classname={'button-secondary'}
                 icon={faUndo}
+                disable={resetDisable}
             />
         </div>
     );

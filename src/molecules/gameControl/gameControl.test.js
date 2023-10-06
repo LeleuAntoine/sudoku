@@ -1,36 +1,55 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import GameControl from './GameControl';
 
-test('renders GameControl component with buttons', () => {
-    const mockReset = jest.fn();
-    const mockAutoPosition = jest.fn();
+const mockSolveSudoku = jest.fn();
+const mockOnReset = jest.fn();
+const mockCancel = jest.fn();
 
-    const {getByText} = render(
-        <GameControl onReset={mockReset} onAutoPosition={mockAutoPosition}/>
-    );
+//TODO
+describe('GameControl', () => {
+    it('devrait afficher les boutons avec les labels corrects', () => {
+        const { getByText } = render(
+            <GameControl onReset={mockOnReset} cancel={mockCancel} solveSudoku={mockSolveSudoku} />
+        );
 
-    const resetButton = getByText(/Réinitialisation/i);
-    const autoPositionButton = getByText(/Positionnement auto/i);
+        expect(getByText('Reset')).toBeInTheDocument();
+        expect(getByText('Solve Sudoku')).toBeInTheDocument();
+        expect(getByText('Undo')).toBeInTheDocument();
+    });
 
-    expect(resetButton).toBeInTheDocument();
-    expect(autoPositionButton).toBeInTheDocument();
-});
+    it('devrait appeler la fonction onReset lorsque le bouton Reset est cliqué', () => {
+        const { getByText } = render(
+            <GameControl onReset={mockOnReset} cancel={mockCancel} solveSudoku={mockSolveSudoku} />
+        );
 
-test('calls onReset and onAutoPosition when buttons are clicked', () => {
-    const mockReset = jest.fn();
-    const mockAutoPosition = jest.fn();
+        const resetButton = getByText((content, element) => {
+            const normalizedText = element.textContent.replace(/\s+/g, ' ').trim();
+            return normalizedText === 'Reset';
+        });
 
-    const {getByText} = render(
-        <GameControl onReset={mockReset} onAutoPosition={mockAutoPosition}/>
-    );
+        fireEvent.click(resetButton);
 
-    const resetButton = getByText(/Réinitialisation/i);
-    const autoPositionButton = getByText(/Positionnement auto/i);
+        expect(mockOnReset).toHaveBeenCalled();
+    });
 
-    fireEvent.click(resetButton);
-    fireEvent.click(autoPositionButton);
+    it('devrait appeler la fonction solveSudoku lorsque le bouton Solve Sudoku est cliqué', () => {
+        const { getByText } = render(
+            <GameControl onReset={mockOnReset} cancel={mockCancel} solveSudoku={mockSolveSudoku} />
+        );
 
-    expect(mockReset).toHaveBeenCalledTimes(1);
-    expect(mockAutoPosition).toHaveBeenCalledTimes(1);
+        fireEvent.click(getByText('Solve Sudoku'));
+
+        expect(mockSolveSudoku).toHaveBeenCalled();
+    });
+
+    it('devrait appeler la fonction cancel lorsque le bouton Undo est cliqué', () => {
+        const { getByText } = render(
+            <GameControl onReset={mockOnReset} cancel={mockCancel} solveSudoku={mockSolveSudoku} />
+        );
+
+        fireEvent.click(getByText('Undo'));
+
+        expect(mockCancel).toHaveBeenCalled();
+    });
 });
