@@ -19,10 +19,6 @@ $default-font-size: 1.5rem;
   .button-icon {
     margin-right: 1rem;
   }
-
-  &:hover {
-    background-color: #0056b3;
-  }
 }
 
 .button-primary {
@@ -31,7 +27,7 @@ $default-font-size: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.button-primary:hover {
+.button-primary:not(:disabled):hover {
   background-color: #005fa3;
   color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -43,7 +39,7 @@ $default-font-size: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.button-secondary:hover {
+.button-secondary:not(:disabled):hover {
   background-color: #444;
   color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -57,7 +53,7 @@ $default-font-size: 1.5rem;
   border: none;
   cursor: pointer;
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: #e68a00;
   }
 }

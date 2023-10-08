@@ -6,6 +6,8 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './gamePage.scss';
 import {useTranslation} from "react-i18next";
+import {isSudokuValid, solveSudoku} from "../../service/AlgorithmService";
+import isEqual from 'lodash/isEqual';
 
 const GamePage = () => {
     const initialGrid = [
@@ -23,142 +25,39 @@ const GamePage = () => {
     const [actionStack, setActionStack] = useState([]);
     const [grid, setGrid] = useState(initialGrid);
     const {t} = useTranslation();
+    const [isSolve, setIsSolve] = useState(false);
 
     const addActionToStack = (action) => {
         setActionStack((prevStack) => [...prevStack, action]);
     };
 
     const handleSudoku = () => {
+
         if (!isSudokuValid(grid)) {
             toast.error(t('translation:error'), {
                 position: 'top-right',
                 autoClose: 3000,
             });
         } else {
-            if (solveSudoku()) {
-                toast.success(t('translation:success'), {
-                    position: 'top-right',
-                    autoClose: 3000,
-                });
-            }
+            setGrid(solveSudoku(grid));
+            setIsSolve(true)
+            toast.success(t('translation:success'), {
+                position: 'top-right',
+                autoClose: 3000,
+            });
         }
     };
 
-    //Check if sudoku grid is valid
-    function isSudokuValid(grid) {
-        for (let row = 0; row < 9; row++) {
-            const rowValues = [];
-            for (let col = 0; col < 9; col++) {
-                const cellValue = grid[row][col];
-                if (cellValue !== 0 && rowValues.includes(cellValue)) {
-                    return false;
-                }
-                rowValues.push(cellValue);
-            }
-        }
-
-        for (let col = 0; col < 9; col++) {
-            const colValues = [];
-            for (let row = 0; row < 9; row++) {
-                const cellValue = grid[row][col];
-                if (cellValue !== 0 && colValues.includes(cellValue)) {
-                    return false;
-                }
-                colValues.push(cellValue);
-            }
-        }
-
-        for (let startRow = 0; startRow < 9; startRow += 3) {
-            for (let startCol = 0; startCol < 9; startCol += 3) {
-                const subgridValues = [];
-                for (let row = startRow; row < startRow + 3; row++) {
-                    for (let col = startCol; col < startCol + 3; col++) {
-                        const cellValue = grid[row][col];
-                        if (cellValue !== 0 && subgridValues.includes(cellValue)) {
-                            return false;
-                        }
-                        subgridValues.push(cellValue);
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    //Resolve valid sudoku grid
-    const solveSudoku = () => {
-        const emptyCell = findEmptyCell(grid);
-
-        if (!emptyCell) {
-            return true;
-        }
-
-        const [row, col] = emptyCell;
-
-        for (let num = 1; num <= 9; num++) {
-            if (isSafe(grid, row, col, num)) {
-                const updatedGrid = [...grid];
-                updatedGrid[row][col] = num;
-                setGrid(updatedGrid);
-
-                if (solveSudoku()) {
-                    return true;
-                }
-
-                updatedGrid[row][col] = 0;
-                setGrid(updatedGrid);
-            }
-        }
-
-        return false;
-    };
-
-
-    function findEmptyCell(grid) {
-        for (let row = 0; row < 9; row++) {
-            for (let col = 0; col < 9; col++) {
-                if (grid[row][col] === 0) {
-                    return [row, col];
-                }
-            }
-        }
-        return null;
-    }
-
-    function isSafe(grid, row, col, num) {
-        for (let i = 0; i < 9; i++) {
-            if (grid[row][i] === num) {
-                return false;
-            }
-        }
-
-        for (let i = 0; i < 9; i++) {
-            if (grid[i][col] === num) {
-                return false;
-            }
-        }
-
-        const startRow = Math.floor(row / 3) * 3;
-        const startCol = Math.floor(col / 3) * 3;
-        for (let i = startRow; i < startRow + 3; i++) {
-            for (let j = startCol; j < startCol + 3; j++) {
-                if (grid[i][j] === num) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
+    //Reset grid to initial state
     const resetSudoku = () => {
         setActionStack([]);
+        setIsSolve(false);
         setGrid(initialGrid);
     };
 
     //Update cell value of Sudoku grid
     const updateCell = (row, col, newValue) => {
+        setIsSolve(false);
         addActionToStack({
             type: "assignValue",
             rowIndex: row,
@@ -198,7 +97,14 @@ const GamePage = () => {
                         updateCell(row, col, newValue);
                     }}
                 />
-                <GameControl cancel={undoLastAction} onReset={resetSudoku} solveSudoku={() => handleSudoku()} resetDisable={actionStack.length === 0}/>
+                <GameControl
+                    cancel={undoLastAction}
+                    solveSudoku={() => handleSudoku()}
+                    onReset={resetSudoku}
+                    resetDisable={isEqual(initialGrid, grid)}
+                    solveDisable={isSolve}
+                    cancelDisable={actionStack.length === 0 || isSolve}
+                />
             </div>
         </div>
     );
